@@ -1,9 +1,9 @@
 .Cell {
-  height: 100px;
-  width: 100px;
-  background-color: darkgray;
+    height: 100px;
+    width: 100px;
+    background: linear-gradient(to top left, #83447e, #592f86);
 }
 
 .Cell-lit {
-  background-color: white;
+    background: linear-gradient(to bottom right, #c6ce56, #e7e410);
 }

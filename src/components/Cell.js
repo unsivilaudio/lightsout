@@ -17,7 +17,7 @@ import '../assets/stylesheets/cell.css';
 const cell = props => {
     const handleClick = e => {
         // call up to the board to flip cells around this cell
-        this.props.flipCellsAroundMe();
+        props.flipCellsAroundMe();
     };
 
     let classes = 'Cell' + (props.isLit ? ' Cell-lit' : '');
