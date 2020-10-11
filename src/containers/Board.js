@@ -1,40 +1,28 @@
 import React from 'react';
 import Cell from '../components/Cell';
 import '../assets/stylesheets/board.css';
-
-/** Game board of Lights out.
- *
- * Properties:
- *
- * - nrows: number of rows of board
- * - ncols: number of cols of board
- * - chanceLightStartsOn: float, chance any cell is lit at start of game
- *
- * State:
- *
- * - hasWon: boolean, true when board is all off
- * - board: array-of-arrays of true/false
- *
- *    For this board:
- *       .  .  .
- *       O  O  .     (where . is off, and O is on)
- *       .  .  .
- *
- *    This would be: [[f, f, f], [t, t, f], [f, f, f]]
- *
- *  This should render an HTML table of individual <Cell /> components.
- *
- *  This doesn't handle any clicks --- clicks are on individual cells
- *
- **/
+import Modal from '../components/ui/Modal';
+import Counter from '../components/Counter';
 
 class Board extends React.Component {
     static defaultProps = { nRows: 5, nCols: 5 };
 
-    state = { hasWon: false, board: [] };
+    state = {
+        hasWon: false,
+        board: [],
+        showModal: false,
+        nMoves: 0,
+        nTime: 0,
+    };
 
     componentDidMount() {
         this.resetGameBoard();
+    }
+
+    componentDidUpdate() {
+        if (this.state.hasWon && !this.state.showModal) {
+            this.setState(prevState => ({ ...prevState, showModal: true }));
+        }
     }
 
     resetGameBoard = () => {
@@ -42,10 +30,15 @@ class Board extends React.Component {
             ...prevState,
             board: this.createBoard(),
             hasWon: false,
+            showModal: false,
+            nMoves: 0,
+            nTime: 0,
         }));
     };
 
-    /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
+    handleCounterChange = count => {
+        this.setState(prevState => ({ ...prevState, nTime: count }));
+    };
 
     createBoard() {
         let board = [];
@@ -61,26 +54,13 @@ class Board extends React.Component {
             }
             board.push(row);
         }
-        // TODO: create array-of-arrays of true/false values
         return board;
     }
 
-    /** handle changing a cell: update board & determine if winner */
-
     flipCellsAround = coord => {
-        let { nCols, nRows } = this.props;
         let board = this.state.board;
         let [y, x] = coord.split('-').map(Number);
 
-        function flipCell(y, x) {
-            // if this coord is actually on board, flip it
-
-            if (x >= 0 && x < nCols && y >= 0 && y < nRows) {
-                board[y][x] = !board[y][x];
-            }
-        }
-
-        // TODO: flip this cell and the cells around it
         const boardState = [];
         const updatedBoard = board.map((row, r) => {
             const updatedRow = row.map((col, c) => {
@@ -97,17 +77,14 @@ class Board extends React.Component {
             return updatedRow;
         });
         const hasWon = boardState.every(row => row === true);
-        // win when every cell is turned off
-        // TODO: determine is the game has been won
 
         this.setState(prevState => ({
             ...prevState,
             board: updatedBoard,
             hasWon,
+            nMoves: prevState.nMoves + 1,
         }));
     };
-
-    /** Render game board or winning message. */
 
     renderGameBoard = () => {
         return this.state.board.map((row, x) => {
@@ -129,19 +106,63 @@ class Board extends React.Component {
         });
     };
 
+    getReadableTime = () => {
+        const minutes = (Math.floor(this.state.nTime / 60) + 100)
+            .toString()
+            .split('')
+            .splice(1)
+            .join('');
+
+        const seconds = ((this.state.nTime % 60) + 100)
+            .toString()
+            .split('')
+            .splice(1)
+            .join('');
+        return `${minutes}:${seconds}`;
+    };
+
     render() {
         return (
-            <div>
-                <h1>This is the board component</h1>
-                <table className='Board'>
-                    <tbody>{this.renderGameBoard()}</tbody>
-                </table>
-            </div>
+            <>
+                <Modal
+                    show={this.state.showModal}
+                    clicked={this.resetGameBoard}>
+                    <div className='ModalContent'>
+                        <h1>Congratulations! You Did it!</h1>
+                        <p>
+                            You finished the game in{' '}
+                            <span>{this.state.nMoves}</span> moves, in a time of{' '}
+                            <span>{this.getReadableTime()}</span>
+                        </p>
+                        <button onClick={this.resetGameBoard}>
+                            Play Again?
+                        </button>
+                    </div>
+                </Modal>
+                <div className='Board'>
+                    <h1>
+                        Lights <span>Out</span>
+                    </h1>
+                    <table className='GameBoard'>
+                        <tbody>{this.renderGameBoard()}</tbody>
+                    </table>
+                    <div className='Stats'>
+                        <p>
+                            Number of moves: <span>{this.state.nMoves}</span>
+                        </p>
+                        <p>
+                            Elapsed Time:{' '}
+                            <Counter
+                                gameOver={this.state.hasWon}
+                                count={this.state.nTime}
+                                onChange={this.handleCounterChange}
+                            />
+                        </p>
+                    </div>
+                    <button onClick={this.resetGameBoard}>New Game</button>
+                </div>
+            </>
         );
-        // if the game is won, just show a winning msg & render nothing else
-        // TODO
-        // make table board
-        // TODO
     }
 }
 
