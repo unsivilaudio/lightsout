@@ -1,5 +1,6 @@
 .Board {
-    width: 80vw;
+    position: relative;
+    /* width: 80vw; */
     margin: 0 auto;
 
     display: flex;
@@ -13,6 +14,7 @@
     text-transform: uppercase;
     letter-spacing: 8px;
     margin-right: -8px;
+    margin-bottom: 1.2rem;
 }
 
 .Board h1 span {
@@ -25,19 +27,25 @@
 .Board button {
     background: #d317c0;
     color: #eee;
-    font-size: 15px;
     font-family: inherit;
-    padding: 5px 15px;
+    padding: 0.5rem 1.5rem;
     border: none;
-    border-radius: 12px;
+    border-radius: 1.2rem;
     box-shadow: 2px 2px 7px 0 rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
+}
+
+.Board Button {
+    position: absolute;
+    top: 1.2rem;
+    left: 50%;
+    transform: translateX(-25rem);
 }
 
 .ModalContent button:hover,
 .Board button:hover {
     background: #e75cee;
-    box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 7px 2px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);
 }
 
@@ -50,6 +58,7 @@
 
 .ModalContent {
     color: #333;
+    line-height: 2;
 }
 
 .GameBoard {
@@ -57,8 +66,28 @@
 }
 
 .Stats {
-    line-height: 0.8;
+    width: 100%;
+    max-width: 50rem;
     color: #eee;
+    background: rgb(206, 70, 240);
+    line-height: 1;
+    padding: 1rem 2.2rem;
+    margin: 10px 0;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Stats p {
+    color: #ccc;
+    font-style: italic;
+}
+
+.Stats p span {
+    color: #eee;
+    font-weight: 700;
 }
 
 @keyframes pulseBright {
@@ -75,5 +104,44 @@
         opacity: 1;
         color: #dff136;
         text-shadow: 1px 1px 3px rgb(231, 231, 158);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .Board {
+        width: 90%;
+    }
+
+    .Board h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.7rem;
+    }
+
+    .Board button {
+        position: relative;
+        font-size: 2rem;
+        width: 100%;
+        max-width: 50rem;
+        margin: 0 1rem;
+        border-radius: 2.5rem;
+        top: 0;
+        left: 0;
+        transform: translate(0);
+    }
+
+    .Stats {
+        flex-direction: row;
+    }
+
+    .ModalContent {
+        line-height: 2.5;
+    }
+
+    .ModalContent h1 {
+        font-size: 2.2rem;
+    }
+
+    .ModalContent p {
+        font-size: 1.2rem;
     }
 }

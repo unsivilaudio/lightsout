@@ -7,7 +7,7 @@
     box-shadow: 1px 1px 1px black;
     padding: 1.6rem 3rem;
     top: 30%;
-    left: calc(15% - 15px);
+    left: calc(15%);
     transition: all 1s ease-out;
 }
 
