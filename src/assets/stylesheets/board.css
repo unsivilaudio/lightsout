@@ -39,21 +39,37 @@
     position: absolute;
     top: 1.2rem;
     left: 50%;
-    transform: translateX(-25rem);
+    transform: translate(-25rem, 0);
 }
 
-.ModalContent button:hover,
 .Board button:hover {
+    /* left: 50%; */
+    transform: translate(-25rem, -2px);
+}
+
+.Board button:active {
+    /* left: 50%; */
+    transform: translate(-25rem, -1px);
+}
+
+.ModalContent button:hover {
+    transform: translate(0, -2px);
+}
+
+.ModalContent button:active {
+    transform: translate(0, -1px);
+}
+
+.Board button:hover,
+.ModalContent button:hover {
     background: #e75cee;
     box-shadow: 2px 2px 7px 2px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
 }
 
-.ModalContent button:active,
-.Board button:active {
+.Board button:active,
+.ModalContent button:active {
     background: #970d9e;
     box-shadow: none;
-    transform: translateY(-1px);
 }
 
 .ModalContent {
@@ -127,6 +143,16 @@
         top: 0;
         left: 0;
         transform: translate(0);
+    }
+
+    .Board button:hover {
+        /* left: 50%; */
+        transform: translate(0, -2px);
+    }
+
+    .Board button:active {
+        /* left: 50%; */
+        transform: translate(0, -1px);
     }
 
     .Stats {
